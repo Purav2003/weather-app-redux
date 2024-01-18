@@ -138,20 +138,20 @@ export default function Home() {
                 <img src={loader.src} className="w-[6%]" alt="Loader" />
               </div>
 
-            </> : <><div className="mt-4 sm:mt-8 md:mt-16 py-4 px-4 sm:px-8 md:px-16 flex flex-col sm:flex-row justify-between w-full text-white rounded-xl bg-[rgba(0,0,0,0.6)]">
+            </> : <><div className="mt-4 sm:mt-8 md:mt-16 py-6 px-8 sm:px-8 md:px-16 flex flex-col sm:flex-row justify-between w-full text-white rounded-xl bg-[rgba(0,0,0,0.6)]">
               <div className="w-full sm:w-[55%]">
                 <h1 className="flex items-center text-[30px]"><CiLocationOn /><a className="pl-4 font-bold">{datas?.name}</a></h1><br></br>
-                {datas.main ? <h1 className="celc text-[70px] font-bold">{Data}&deg;C</h1> : null}<br></br>
+                {datas.main ? <h1 className="celc text-[70px] text-center lg:text-left font-bold">{Data}&deg;C</h1> : null}<br></br>
                 <h1 className="flex items-center text-[30px]"><BsCloudFog /><a className="pl-4 font-bold">{real}</a></h1>
               </div>
               <div className="pt-4 w-full sm:w-[45%] grid grid-cols-1 lg:grid-cols-2 sm:grid-cols-1">
                 <div className="grid grid-cols-2 lg:grid-cols-1">
-                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[20px]"><BsSunrise /><a className="pl-4">{myArrayrise[4]} IST</a></h1>
-                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[20px]"><BsSunset /><a className="pl-4">{myArraySet[4]} IST</a></h1>
+                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[18px]"><BsSunrise /><a className="pl-4">{myArrayrise[4]} IST</a></h1>
+                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[18px]"><BsSunset /><a className="pl-4">{myArraySet[4]} IST</a></h1>
                 </div>
                 <div className="grid grid-cols-2 pt-3 lg:pt-0 md:pt-0 lg:grid-cols-1">
-                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[20px]"><RiScales2Line /><a className="pl-4">{datas?.main?.pressure} hPa</a></h1>
-                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[20px]"><MdOutlineRemoveRedEye /><a className="pl-4">{datas.visibility / 1000} Miles</a></h1>
+                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[18px]"><RiScales2Line /><a className="pl-4">{datas?.main?.pressure} hPa</a></h1>
+                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[18px]"><MdOutlineRemoveRedEye /><a className="pl-4">{datas.visibility / 1000} Miles</a></h1>
                 </div>
               </div>
             </div>
