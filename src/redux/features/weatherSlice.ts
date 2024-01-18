@@ -45,7 +45,7 @@ export const getLiveData = createAsyncThunk('weather/getLiveData', async (city: 
 
 const initialState: WeatherState = {
     data: {},
-    isLoading: false,
+    isLoading: true,
     live_data: [],
     userInput: "", // New property to store user input
 
@@ -66,7 +66,7 @@ export const weather = createSlice({
                 state.isLoading = true;
             })
             .addCase(getLiveData.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = false;
             })
             .addCase(getData.fulfilled, (state, action: PayloadAction<any>) => {
                 state.isLoading = false;
