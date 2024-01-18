@@ -14,9 +14,12 @@
   background: rgba(0, 0, 0, 0.4);  
 }
 
-/* body{
-  overflow: hidden !important;
-} */
+@media screen and (min-width:1100px) {
+  body{
+    overflow: hidden !important;
+  }
+  
+}
 
 .blur-background {
   position: absolute;
