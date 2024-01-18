@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* .main{
+  background: url('../assets/img/back.jpg');
+  background-repeat: no-repeat;
+  background-size: 100vw;
+} */
+.main {
+  position: relative;
+  z-index: 1 !important;
+  background: rgba(0, 0, 0, 0.4);  
+}
+
+/* body{
+  overflow: hidden !important;
+} */
+
+.blur-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/img/back.jpg'); /* Replace with your actual background image URL */
+  background-size: cover;
+  filter: blur(2px);
+  z-index: -10 !important;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.main-heading{
+  font-family: 'Satisfy' !important;
+  font-weight: 800 !important;
+}
+
+
+.main:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.search-bar::placeholder{
+  color: #fff !important;
+}
+
+
+input{
+  padding-left: 20px;
+  padding-right: 40px;
+  outline: none !important;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+
+}
