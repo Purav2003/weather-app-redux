@@ -1,7 +1,7 @@
 "use client";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { useEffect, useState } from "react";
-import { getData, getLiveData, setInput } from "@/redux/features/weatherSlice";
+import { getData, getLiveData } from "@/redux/features/weatherSlice";
 import { CiSearch } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { BsCloudFog } from "react-icons/bs";
@@ -15,7 +15,6 @@ import loader from "../assets/img/loader.gif"
 
 export default function Home() {
   let datas = useAppSelector((state) => state.weatherReducer.data);
-  console.log(datas);
   let data_live = useAppSelector((state) => state.weatherReducer.live_data);
   let isLoading = useAppSelector((state) => state.weatherReducer.isLoading);
 
@@ -24,13 +23,11 @@ export default function Home() {
   const [close, setClose] = useState('false');
   const dispatch = useAppDispatch();
 
-  console.log(data_live);
 
   const handleInputChange = async (e) => {
     setClose('false');
     const inputValue = e.target.value;
     setFormData(inputValue);
-    dispatch(setInput(inputValue));
     dispatch(getLiveData(inputValue));
 
   };
@@ -78,7 +75,6 @@ export default function Home() {
     if (formData) {
       dispatch(getData(formData));
       setClose('true');
-
     }
   };
 
@@ -113,11 +109,15 @@ export default function Home() {
           </div>
           <div className={`lg:max-w-[20%] ${close === 'true' ? "hidden" : ""} absolute`}>
             {
-              formData ? data_live.length > 1 ? data_live?.map((item) => (
-                <div key={item.id} className={`bg-white p-4 w-auto hover:bg-[#eee] hover:cursor-pointer`} onClick={() => { dispatch(getData(item.name)); removeIt(); }}>
-                  {item.name},&nbsp;{item.country}
+              formData ? data_live.length > 1 ? <>
+                <div className={`rounded-md bg-white w-auto`}>
+
+                  {data_live?.map((item) => (
+                    <h1 onClick={() => { dispatch(getData(item.name)); removeIt(); }} className="flex items-center p-4 hover:bg-gray-300 rounded-md hover:cursor-pointer"><CiLocationOn /> <span className="pl-2">{ item.name }, <b className="text-gray-800">{item.country}</b></span></h1>
+              )) }
                 </div>
-              )) : "" : ""
+
+              </> : "" : ""
             }
           </div>
         </div>
@@ -146,16 +146,16 @@ export default function Home() {
               </div>
               <div className="pt-4 w-full sm:w-[45%] grid grid-cols-1 lg:grid-cols-2 sm:grid-cols-1">
                 <div className="grid grid-cols-2 lg:grid-cols-1">
-                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[18px]"><BsSunrise /><a className="pl-4">{myArrayrise[4]} IST</a></h1>
-                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[18px]"><BsSunset /><a className="pl-4">{myArraySet[4]} IST</a></h1>
+                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] md:text-[22px] font-medium text-[18px]"><BsSunrise /><a className="pl-4">{myArrayrise[4]} IST</a></h1>
+                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] md:text-[22px] font-medium text-[18px]"><BsSunset /><a className="pl-4">{myArraySet[4]} IST</a></h1>
                 </div>
                 <div className="grid grid-cols-2 pt-3 lg:pt-0 md:pt-0 lg:grid-cols-1">
-                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[18px]"><RiScales2Line /><a className="pl-4">{datas?.main?.pressure} hPa</a></h1>
-                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] font-medium text-[18px]"><MdOutlineRemoveRedEye /><a className="pl-4">{datas.visibility / 1000} Miles</a></h1>
+                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] md:text-[22px] font-medium text-[18px]"><RiScales2Line /><a className="pl-4">{datas?.main?.pressure} hPa</a></h1>
+                  <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] md:text-[22px] font-medium text-[18px]"><MdOutlineRemoveRedEye /><a className="pl-4">{datas.visibility / 1000} Miles</a></h1>
                 </div>
               </div>
             </div>
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-6 mt-4 sm:mt-8 bg-[rgba(0,0,0,0.6)] p-4 sm:p-6 lg:p-6 text-white rounded-xl ">
+              <div className="grid grid-cols-2 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-6 mt-4 sm:mt-8 bg-[rgba(0,0,0,0.6)] p-4 sm:p-6 lg:p-6 text-white rounded-xl ">
                 <div className="pl-4 pt-2 lg:pt-0 sm:pt-2 md:pt-0 sm:pl-8"><h1 className="lg:font-bold font-medium text-[27px]">{Data1}&deg;C</h1><i className="text-xl font-thin">Feels Like</i></div>
                 <div className="pl-4 pt-2 lg:pt-0 sm:pt-2 md:pt-0 sm:pl-8"><h1 className="lg:font-bold font-medium text-[27px]">{datas?.main?.humidity} %</h1><i className="text-xl font-thin">Humidity</i></div>
                 <div className="pl-4 pt-2 lg:pt-0 sm:pt-2 md:pt-0 sm:pl-8"><h1 className="lg:font-bold font-medium text-[27px]">{datas?.wind?.speed} MPH</h1><i className="text-xl font-thin">Wind Speed</i></div>

@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 interface WeatherState {
-    data: {}; // Adjust the type based on the actual structure of your data
+    data: {}; 
     isLoading: boolean;
     live_data: [];
-    userInput: "", // New property to store user input
 }
 
 
@@ -14,15 +13,6 @@ export const getData = createAsyncThunk('weather/getData', async (city: string) 
         const api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=d4ae24496549355b15e4a719111440e4&units=imperial`;
         const response = await fetch(api);
         var data = await response.json();
-        var datas = "Not Found"
-        console.log(data);
-
-        if (data) {
-            data = data
-        }
-        else {
-            data= datas;
-        }
         return data;
     } catch (err) {
         console.error(err);
@@ -33,7 +23,6 @@ export const getLiveData = createAsyncThunk('weather/getLiveData', async (city: 
     try {
         const api = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=3&appid=d4ae24496549355b15e4a719111440e4&units=imperial`;
         const response = await fetch(api);
-        console.log(api)
         const data = await response.json();
 
         return data;
@@ -47,19 +36,13 @@ const initialState: WeatherState = {
     data: {},
     isLoading: true,
     live_data: [],
-    userInput: "", // New property to store user input
 
 };
 
 export const weather = createSlice({
     name: "weather",
     initialState,
-    reducers: {
-        setInput: (state, action) => {
-            state.userInput = action.payload;
-        },
-
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(getData.pending, (state) => {
@@ -86,6 +69,6 @@ export const weather = createSlice({
 });
 
 
-export const { setInput } = weather.actions;
+export const { } = weather.actions;
 
 export default weather.reducer;
