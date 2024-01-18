@@ -13,7 +13,16 @@ export const getData = createAsyncThunk('weather/getData', async (city: string) 
 
         const api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=d4ae24496549355b15e4a719111440e4&units=imperial`;
         const response = await fetch(api);
-        const data = await response.json();
+        var data = await response.json();
+        var datas = "Not Found"
+        console.log(data);
+
+        if (data) {
+            data = data
+        }
+        else {
+            data= datas;
+        }
         return data;
     } catch (err) {
         console.error(err);
@@ -26,6 +35,7 @@ export const getLiveData = createAsyncThunk('weather/getLiveData', async (city: 
         const response = await fetch(api);
         console.log(api)
         const data = await response.json();
+
         return data;
     } catch (err) {
         console.error(err);
