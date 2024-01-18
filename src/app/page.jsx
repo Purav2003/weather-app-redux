@@ -126,7 +126,7 @@ export default function Home() {
           <div className="justify-center grid">
             <img src={image.src} /><br></br>
           </div>
-            <p className="text-[24px] text-center py-4 ">Sorry !!! We can not find <i className="text-[30px] font-bold">"{formData}"</i></p>
+            <p className="text-[24px] text-center py-4">Sorry !!! We can not find <i className="text-[30px] font-bold">{formData}</i></p>
             </div>
         </>
           : <>
