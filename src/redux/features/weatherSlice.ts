@@ -35,7 +35,7 @@ export const getLiveData = createAsyncThunk('weather/getLiveData', async (city: 
 
 export const getForcast = createAsyncThunk('weather/getForcast', async (id:string   ) => {
     try {
-        const api = `http://api.openweathermap.org/data/2.5/forecast?id=${id}&appid=fbcf4e9c71e3e65e78c28ff3c4993e05&units=imperial`
+        const api = `https://api.openweathermap.org/data/2.5/forecast?id=${id}&appid=fbcf4e9c71e3e65e78c28ff3c4993e05&units=imperial`
         console.log(api);
         
         const response = await fetch(api);
