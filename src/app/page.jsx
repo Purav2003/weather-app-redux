@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { getData, getLiveData, getForcast } from "@/redux/features/weatherSlice";
 import { CiSearch } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
-import { BsCloudFog } from "react-icons/bs";
 import { BsSunrise } from "react-icons/bs";
 import { BsSunset } from "react-icons/bs";
 import { RiScales2Line } from "react-icons/ri";
@@ -135,7 +134,7 @@ export default function Home() {
                 <div className={`rounded-md bg-white w-auto`}>
 
                   {data_live?.map((item) => (
-                    <h1 onClick={() => { dispatch(getData(item.name)); removeIt(); }} className="flex items-center p-4 hover:bg-gray-300 rounded-md hover:cursor-pointer"><CiLocationOn /> <span className="pl-2">{item.name}, <b className="text-gray-800">{item.country}</b></span></h1>
+                    <h1 onClick={() => { dispatch(getData(item.name)); removeIt(); }} key={item.name} className="flex items-center p-4 hover:bg-gray-300 rounded-md hover:cursor-pointer"><CiLocationOn /> <span className="pl-2">{item.name}, <b className="text-gray-800">{item.country}</b></span></h1>
                   ))}
                 </div>
 
