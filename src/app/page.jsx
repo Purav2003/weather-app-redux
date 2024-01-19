@@ -201,7 +201,7 @@ export default function Home() {
                     const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
 
                     return (
-                      <div key={index} className="bg-[rgba(0,0,0,0.6)] p-6 rounded-md">
+                      <div key={index} className="bg-gray-900 p-6 rounded-md">
                         <div className="text-lg font-semibold mb-2">
                           {item?.dt_txt?.split(' ')[0]?.split('-').reverse().slice(0, 2).join('-')} , {day}
                         </div>
