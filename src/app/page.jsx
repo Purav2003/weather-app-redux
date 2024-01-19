@@ -1,7 +1,7 @@
 "use client";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { useEffect, useState } from "react";
-import { getData, getLiveData } from "@/redux/features/weatherSlice";
+import { getData, getLiveData, getForcast } from "@/redux/features/weatherSlice";
 import { CiSearch } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { BsCloudFog } from "react-icons/bs";
@@ -12,16 +12,27 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import image from "../assets/img/404.png"
 import favcon from "../assets/img/favcon.png"
 import loader from "../assets/img/loader.gif"
+import { MdTimeline } from "react-icons/md";
 
+import { useCallback } from "react";
 export default function Home() {
   let datas = useAppSelector((state) => state.weatherReducer.data);
   let data_live = useAppSelector((state) => state.weatherReducer.live_data);
   let isLoading = useAppSelector((state) => state.weatherReducer.isLoading);
+  const forecast_data = useAppSelector((state) => state.weatherReducer.forecast_data);
+  let data_forcast = forecast_data?.list
+  data_forcast = data_forcast?.filter((element, index) => index % 4 === 0 || index === 0);
+  data_forcast = data_forcast?.filter((element, index) => index % 2 === 0 || index === 0);
+  data_forcast = data_forcast?.filter((element, index) => index !== 0);
 
+  console.log(data_forcast)
+
+  let id_city = datas?.id
+  console.log(id_city);
   const [formData, setFormData] = useState('');
-  const [cityData, setCityData] = useState('');
   const [close, setClose] = useState('false');
   const dispatch = useAppDispatch();
+  console.log(forecast_data)
 
 
   const handleInputChange = async (e) => {
@@ -71,24 +82,35 @@ export default function Home() {
   const myArrayrise = rise.split(" ");
   const myArraySet = set.split(" ");
 
-  const handleClick = async (e) => {
+  const handleClick = useCallback(async () => {
     if (formData) {
       dispatch(getData(formData));
       setClose('true');
     }
-  };
-
+  }, [formData, dispatch]);
   const removeIt = () => {
     setClose('true');
   };
 
+  const hello = useCallback(() => {
+    if (datas?.id) {
+      dispatch(getForcast(id_city));
+    }
+  }, [datas, dispatch]);
+
+  const getDataCallback = useCallback((city) => {
+    dispatch(getData(city));
+    setClose('true');
+  }, [dispatch]);
+
   useEffect(() => {
     if (!formData) {
-      dispatch(getData("Ahmedabad"));
-      setClose('true');
-
+      getDataCallback("Ahmedabad");
     }
-  }, []);
+    hello();
+  }, [id_city]);
+
+
 
   return (
     <div className="overflow-hidden main min-h-screen px-4 md:px-8 lg:px-16 py-4 sm:py-8 md:py-12 relative">
@@ -113,8 +135,8 @@ export default function Home() {
                 <div className={`rounded-md bg-white w-auto`}>
 
                   {data_live?.map((item) => (
-                    <h1 onClick={() => { dispatch(getData(item.name)); removeIt(); }} className="flex items-center p-4 hover:bg-gray-300 rounded-md hover:cursor-pointer"><CiLocationOn /> <span className="pl-2">{ item.name }, <b className="text-gray-800">{item.country}</b></span></h1>
-              )) }
+                    <h1 onClick={() => { dispatch(getData(item.name)); removeIt(); }} className="flex items-center p-4 hover:bg-gray-300 rounded-md hover:cursor-pointer"><CiLocationOn /> <span className="pl-2">{item.name}, <b className="text-gray-800">{item.country}</b></span></h1>
+                  ))}
                 </div>
 
               </> : "" : ""
@@ -141,9 +163,18 @@ export default function Home() {
             </> : <><div className="mt-4 sm:mt-8 md:mt-16 py-6 px-8 sm:px-8 md:px-16 flex flex-col sm:flex-row justify-between w-full text-white rounded-xl bg-[rgba(0,0,0,0.6)]">
               <div className="w-full sm:w-[55%]">
                 <h1 className="flex items-center text-[30px]"><CiLocationOn /><a className="pl-4 font-bold">{datas?.name}</a></h1><br></br>
-                {datas.main ? <h1 className="celc text-[70px] text-center lg:text-left font-bold">{Data}&deg;C</h1> : null}<br></br>
-                <h1 className="flex items-center text-[30px]"><BsCloudFog /><a className="pl-4 font-bold">{real}</a></h1>
-              </div>
+
+                {datas.main ? 
+                  
+                <h1 className="celc text-[70px] text-center lg:text-left md:text-left font-bold">{Data}&deg;C</h1> : null}<br></br>
+                <div className="mb-2">
+                  {datas?.weather?.map((weatherItem, index) => (
+                    <div key={index} className="flex items-center">
+                      <img src={`https://openweathermap.org/img/wn/${weatherItem?.icon}.png`} alt="weather icon" className={`w-12 h-12 text-[white] ${weatherItem?.main !== "Clear"?"bg-[rgba(255,255,255,0.6)] rounded-full mr-4":""}`} />
+                      <span className="text-[30px] capitalize font-bold mr-2">{weatherItem?.main}</span>
+                    </div>
+                  ))}
+                </div>              </div>
               <div className="pt-4 w-full sm:w-[45%] grid grid-cols-1 lg:grid-cols-2 sm:grid-cols-1">
                 <div className="grid grid-cols-2 lg:grid-cols-1">
                   <h1 className="w-full lg:font-bold flex items-center lg:text-[30px] md:text-[22px] font-medium text-[18px]"><BsSunrise /><a className="pl-4">{myArrayrise[4]} IST</a></h1>
@@ -163,9 +194,42 @@ export default function Home() {
                 <div className="pl-4 pt-2 lg:pt-0 sm:pt-2 md:pt-0 sm:pl-8"><h1 className="lg:font-bold font-medium text-[27px]">{max}&deg;C</h1><i className="text-xl font-thin">Maximum Today</i></div>
                 <div className="pl-4 pt-2 lg:pt-0 sm:pt-2 md:pt-0 sm:pl-8"><h1 className="lg:font-bold font-medium text-[27px]">{datas?.sys?.country}</h1><i className="text-xl font-thin">Country</i></div>
               </div>
+              <div className="mt-4 sm:mt-8 p-6 bg-[rgba(0,0,0,0.6)] text-white rounded-xl">
+                <h1 className="pb-4 font-bold text-[30px] flex pl-2 items-center"><MdTimeline />&nbsp; 4 Day Forcast</h1>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {data_forcast?.map((item, index) => {
+                    const date = new Date(item.dt_txt);
+                    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+
+                    return (
+                      <div key={index} className="bg-[rgba(0,0,0,0.6)] p-6 rounded-md">
+                        <div className="text-lg font-semibold mb-2">
+                          {item?.dt_txt?.split(' ')[0]?.split('-').reverse().slice(0, 2).join('-')} , {day}
+                        </div>
+                        <div className="text-2xl mb-2">
+                          {((item.main?.temp_min - 32) * 5 / 9).toFixed(0)}&deg;C / {((item.main?.temp_max - 32) * 5 / 9).toFixed(0)}&deg;C
+                        </div>
+                        <div className="mb-2 flex items-center">
+                          {item?.weather?.map((weatherItem, index) => (
+                            <div key={index} className="flex items-center">
+                              <span className="text-lg capitalize mr-1">{weatherItem?.main}</span>
+                              <img src={`https://openweathermap.org/img/wn/${weatherItem?.icon}.png`} alt="weather icon" className="w-8 h-8" />
+                            </div>
+                          ))}
+                        </div>
+                        <div className="text-lg">
+                          Wind: {item?.wind?.speed} MPH
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
             </>}
           </>
       }
+
     </div>
   );
 }
